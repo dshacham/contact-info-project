@@ -12,7 +12,7 @@ exports.getContact = (req, res) => {
 };
 
 exports.postContact = (req, res) => {
-    db.get("contactInfos").push(req.body).last().assign({ id: new Date().toString() }).write();
+    db.get("contactInfos").push(req.body).last().assign({ id: new Date().getTime().toString() }).write();
     res.json({ success: true, contactInfo: req.body });
 };
 

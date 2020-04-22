@@ -12,7 +12,7 @@ exports.getUser = (req, res) => {
 };
 
 exports.postUser = (req, res) => {
-    db.get("userInfo").push(req.body).last().assign({ id: new Date().toString() }).write();
+    db.get("userInfo").push(req.body).last().assign({ id: new Date().getTime().toString() }).write();
     res.json({ success: true, userInfo: req.body });
 };
 
