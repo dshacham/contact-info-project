@@ -1,0 +1,28 @@
+{
+  "contactInfos": [
+    {
+      "id": "Wed Apr 22 2020 12:46:56 GMT+0200 (Central European Summer Time)",
+      "email": "test222@test.com",
+      "phone": "0123456789",
+      "address": "Main Street 14"
+    },
+    {
+      "id": "Wed Apr 22 2020 12:48:20 GMT+0200 (Central European Summer Time)",
+      "email": "anotherTest@test.com",
+      "phone": "0987654321",
+      "address": "Hello World 55"
+    }
+  ],
+  "userInfo": [
+    {
+      "username": "dshacham",
+      "password": "213456",
+      "id": "Wed Apr 22 2020 12:58:46 GMT+0200 (Central European Summer Time)"
+    },
+    {
+      "username": "blabla",
+      "password": "abcdefg",
+      "id": "Wed Apr 22 2020 12:59:24 GMT+0200 (Central European Summer Time)"
+    }
+  ]
+}
