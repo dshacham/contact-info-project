@@ -11,8 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "http-errors": "^1.7.3",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "mongoose": "^5.9.10"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

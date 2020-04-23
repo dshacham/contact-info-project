@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
 const createError = require("http-errors");
+const mongoose = require("mongoose");
 
 const indexRoute = require("./routes/indexRoute");
 const contactRoute = require("./routes/contactRoute");
 const usersRoute = require("./routes/usersRoute");
+
+mongoose.connect("mongodb://127.0.0.1:27017/contact-info", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on("error", (err) => console.log(err));
+mongoose.connection.on("open", () => console.log("database connected"));
 
 const port = process.env.PORT || 3000;
 

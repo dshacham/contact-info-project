@@ -1,14 +1,28 @@
-const db = require("../models/db.js");
 const createError = require("http-errors");
+const db = require("../models/db.js");
+const User = require("../models/userSchema");
 
-exports.getUsers = (req, res) => {
-    let userInfo = db.get("userInfo").value();
-    res.json({ success: true, userInfo: userInfo });
+exports.getUsers = async (req, res, next) => {
+    // let userInfo = db.get("userInfo").value();
+    try {
+        const userInfo = await User.find();
+        res.json({ success: true, userInfo: userInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
-exports.getUser = (req, res) => {
-    let userInfo = db.get("userInfo").find({ id: req.params.id });
-    res.json({ success: true, userInfo: userInfo });
+exports.getUser = async (req, res, next) => {
+    // let userInfo = db.get("userInfo").find({ id: req.params.id });
+    const { id } = req.params;
+    try {
+        const userInfo = await User.findById(id);
+        res.json({ success: true, userInfo: userInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
 exports.postUser = (req, res) => {
