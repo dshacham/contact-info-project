@@ -1,34 +1,67 @@
-const db = require("../models/db.js");
+// const db = require("../models/db.js");
 const createError = require("http-errors");
+const Contact = require("../models/contactSchema");
 
-exports.getContacts = (req, res) => {
-    let contactInfo = db.get("contactInfos").value();
-    res.json({ success: true, contactInfo: contactInfo });
+
+exports.getContacts = async (req, res, next) => {
+    // let contactInfo = db.get("contactInfos").value();
+    try {
+        const contactInfo = await Contact.find();
+        res.json({ success: true, contactInfo: contactInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
-exports.getContact = (req, res) => {
-    let contactInfo = db.get("contactInfos").find({ id: req.params.id });
-    res.json({ success: true, contactInfo: contactInfo });
+exports.getContact = async (req, res, next) => {
+    // const contactInfo = db.get("contactInfos").find(id);
+    const { id } = req.params;
+    try {
+        const contactInfo = await Contact.findById(id);
+        res.json({ success: true, contactInfo: contactInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
-exports.postContact = (req, res) => {
-    db.get("contactInfos").push(req.body).last().assign({ id: new Date().getTime().toString() }).write();
-    res.json({ success: true, contactInfo: req.body });
+exports.postContact = async (req, res, next) => {
+    // db.get("contactInfos").push(req.body).last().assign({ id: new Date().getTime().toString() }).write();
+    try {
+        const newContactInfo = new Contact(req.body);
+        await newContactInfo.save();
+        res.json({ success: true, newContactInfo: newContactInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
-exports.putContact = (req, res) => {
+exports.putContact = async (req, res, next) => {
+    // db.get("contactInfos").find({ id }).assign(contactInfo).write();
     const { id } = req.params;
     const contactInfo = req.body;
-    db.get("contactInfos").find({ id }).assign(contactInfo).write();
-    res.json({ success: true, contactInfo: contactInfo });
+    try {
+        const updateInfo = await Contact.findByIdAndUpdate(id, contactInfo, { new: true });
+        if (!contactInfo) throw createError(404);
+        res.json({ success: true, updateInfo: updateInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };
 
-exports.deleteContact = (req, res, next) => {
-    if (req.params.id !== "1") {
-        next(createError(500));
-    };
-
+exports.deleteContact = async (req, res, next) => {
+    // const contactInfo = db.get("contactInfos").remove({ id }).write();
     const { id } = req.params;
-    const contactInfo = db.get("contactInfos").remove({ id }).write();
-    res.json({ success: true, contactInfo: contactInfo });
+    const contactInfo = req.body;
+    try {
+        const deleteInfo = await Contact.findByIdAndDelete(id, contactInfo);
+        if (!contactInfo) throw createError(404);
+        res.json({ success: true, contactInfo: contactInfo });
+    }
+    catch (err) {
+        next(err);
+    };
 };

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/userSchema");
 const faker = require("faker");
 
-const main = async () => {
+const main = async (req, res) => {
     mongoose.connect("mongodb://127.0.0.1:27017/contact-info", { useNewUrlParser: true, useUnifiedTopology: true });
     mongoose.connection.on("error", (err) => console.log(err));
     mongoose.connection.on("open", () => console.log("database connected"));
@@ -19,7 +19,7 @@ const main = async () => {
         const user = new User({
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
-            email: faker.internet.email(),
+            userName: faker.internet.userName(),
             password: faker.internet.password()
         });
 
