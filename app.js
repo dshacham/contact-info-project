@@ -7,7 +7,7 @@ const indexRoute = require("./routes/indexRoute");
 const contactRoute = require("./routes/contactRoute");
 const usersRoute = require("./routes/usersRoute");
 
-mongoose.connect("mongodb://127.0.0.1:27017/contact-info", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect("mongodb://127.0.0.1:27017/contact-info", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 mongoose.connection.on("error", (err) => console.log(err));
 mongoose.connection.on("open", () => console.log("database connected"));
 

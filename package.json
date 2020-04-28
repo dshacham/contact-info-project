@@ -15,7 +15,8 @@
     "faker": "^4.1.0",
     "http-errors": "^1.7.3",
     "lowdb": "^1.0.0",
-    "mongoose": "^5.9.10"
+    "mongoose": "^5.9.10",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
