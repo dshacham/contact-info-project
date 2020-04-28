@@ -11,7 +11,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/contact-info", { useNewUrlParser: tr
 mongoose.connection.on("error", (err) => console.log(err));
 mongoose.connection.on("open", () => console.log("database connected"));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(express.json());
 

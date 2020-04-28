@@ -1,5 +1,5 @@
+// const db = require("../models/db.js");
 const createError = require("http-errors");
-const db = require("../models/db.js");
 const User = require("../models/userSchema");
 
 exports.getUsers = async (req, res, next) => {
