@@ -6,7 +6,7 @@ exports.getUsers = async (req, res, next) => {
     // let userInfo = db.get("userInfo").value();
 
     try {
-        const userInfo = await User.find();
+        const userInfo = await User.find().populate("contact", "-__v -_id");
         res.json({ success: true, userInfo: userInfo });
     }
     catch (err) {
@@ -18,7 +18,7 @@ exports.getUser = async (req, res, next) => {
     // let userInfo = db.get("userInfo").find({ id: req.params.id });
     const { id } = req.params;
     try {
-        const userInfo = await User.findById(id);
+        const userInfo = await User.findById(id).populate("contact", "-__v -_id");
         res.json({ success: true, userInfo: userInfo });
     }
     catch (err) {
@@ -45,7 +45,7 @@ exports.putUser = async (req, res, next) => {
     const { id } = req.params;
     const user = req.body;
     try {
-        const userInfo = await User.findByIdAndUpdate(id, user, { new: true });
+        const userInfo = await User.findByIdAndUpdate(id, user, { new: true }).populate("contact", "-__v -_id");
         if (!user) throw createError(404);
         res.json({ success: true, userInfo: userInfo });
     }
@@ -62,6 +62,20 @@ exports.deleteUser = async (req, res, next) => {
         const userInfo = await User.findByIdAndDelete(id);
         if (!userInfo) throw createError(404);
         res.json({ success: true, userInfo: userInfo });
+    }
+    catch (err) {
+        next(err);
+    };
+};
+
+exports.login = async (req, res, next) => {
+    const { userName, password } = req.body;
+
+    try {
+        const user = await User.findOne({ userName, password });
+        if (!user) throw createError(404);
+        res.header("test", "123");
+        res.json({ success: true, message: `Welcome, ${user.userName}!` });
     }
     catch (err) {
         next(err);

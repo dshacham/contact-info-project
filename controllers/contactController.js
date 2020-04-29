@@ -6,8 +6,13 @@ const Contact = require("../models/contactSchema");
 exports.getContacts = async (req, res, next) => {
     // let contactInfo = db.get("contactInfos").value();
     try {
-        const contactInfo = await Contact.find();
-        res.json({ success: true, contactInfo: contactInfo });
+        const value = req.header("test");
+        if (value === "123") {
+            const contactInfo = await Contact.find();
+            res.json({ success: true, contactInfo: contactInfo });
+        } else {
+            throw createError(404);
+        };
     }
     catch (err) {
         next(err);
