@@ -1,13 +1,14 @@
 // const db = require("../models/db.js");
 const createError = require("http-errors");
 const Contact = require("../models/contactSchema");
-
+const jwt = require("jsonwebtoken");
 
 exports.getContacts = async (req, res, next) => {
     // let contactInfo = db.get("contactInfos").value();
     try {
-        const value = req.header("test");
-        if (value === "123") {
+        const value = req.header("x-auth");
+        const check = jwt.verify(value, "secretKey");
+        if (check) {
             const contactInfo = await Contact.find();
             res.json({ success: true, contactInfo: contactInfo });
         } else {

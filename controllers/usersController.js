@@ -1,12 +1,13 @@
 // const db = require("../models/db.js");
 const createError = require("http-errors");
 const User = require("../models/userSchema");
+const jwt = require("jsonwebtoken");
 
 exports.getUsers = async (req, res, next) => {
     // let userInfo = db.get("userInfo").value();
 
     try {
-        const userInfo = await User.find().populate("contact", "-__v -_id");
+        const userInfo = await User.find().populate("contact", "-__v");
         res.json({ success: true, userInfo: userInfo });
     }
     catch (err) {
@@ -30,9 +31,13 @@ exports.postUser = async (req, res, next) => {
     // db.get("userInfo").push(req.body).last().assign({ id: new Date().getTime().toString() }).write();
     // res.json({ success: true, userInfo: req.body });
     try {
-        const newUser = new User(req.body);
-        await newUser.save();
-        res.json({ success: true, newUser: newUser });
+        const user = new User(req.body);
+        const token = user.generateAuthToken();
+        await user.save();
+
+        const data = user.getPublicFields();
+
+        res.header("x-auth", token).json({ success: true, newUser: data });
     }
     catch (err) {
         next(err);
@@ -72,10 +77,16 @@ exports.login = async (req, res, next) => {
     const { userName, password } = req.body;
 
     try {
-        const user = await User.findOne({ userName, password });
+        const user = await User.findOne({ userName });
         if (!user) throw createError(404);
-        res.header("test", "123");
-        res.json({ success: true, message: `Welcome, ${user.userName}!` });
+        // let token = jwt.sign({ _id: user._id }, "secretKey");
+        const valid = await user.checkPassword(password);
+        if (!valid) throw createError(403);
+
+        let token = user.generateAuthToken();
+        const data = user.getPublicFields();
+
+        res.header("x-auth", token).json({ success: true, user: data });
     }
     catch (err) {
         next(err);
