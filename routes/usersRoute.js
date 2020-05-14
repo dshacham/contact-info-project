@@ -3,7 +3,7 @@ const { getUsers, getUser, postUser, putUser, deleteUser, login } = require("../
 const { validateUserInputs } = require("../middleware/userValidator");
 const auth = require("../middleware/authenticator");
 
-Route.get("/", getUsers);
+Route.get("/", auth, getUsers);
 Route.get("/:id", auth, getUser);
 Route.post("/register", validateUserInputs(), postUser);
 Route.post("/login", login)
