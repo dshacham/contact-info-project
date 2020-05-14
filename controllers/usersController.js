@@ -7,7 +7,7 @@ exports.getUsers = async (req, res, next) => {
     // let userInfo = db.get("userInfo").value();
 
     try {
-        const userInfo = await User.find().populate("contact", "-__v");
+        const userInfo = await User.find();
         res.json({ success: true, userInfo: userInfo });
     }
     catch (err) {
@@ -19,7 +19,7 @@ exports.getUser = async (req, res, next) => {
     // let userInfo = db.get("userInfo").find({ id: req.params.id });
     const { id } = req.params;
     try {
-        const userInfo = await User.findById(id).populate("contact", "-__v -_id");
+        const userInfo = await User.findById(id);
         res.json({ success: true, userInfo: userInfo });
     }
     catch (err) {
@@ -50,7 +50,7 @@ exports.putUser = async (req, res, next) => {
     const { id } = req.params;
     const user = req.body;
     try {
-        const userInfo = await User.findByIdAndUpdate(id, user, { new: true }).populate("contact", "-__v -_id");
+        const userInfo = await User.findByIdAndUpdate(id, user, { new: true });
         if (!user) throw createError(404);
         res.json({ success: true, userInfo: userInfo });
     }
@@ -66,7 +66,7 @@ exports.deleteUser = async (req, res, next) => {
     try {
         const userInfo = await User.findByIdAndDelete(id);
         if (!userInfo) throw createError(404);
-        res.json({ success: true, userInfo: userInfo });
+        res.json({ success: true, userInfo: `${userInfo} was deleted.` });
     }
     catch (err) {
         next(err);

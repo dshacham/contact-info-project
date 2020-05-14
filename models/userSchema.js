@@ -20,7 +20,13 @@ const UserSchema = new Schema(
             }
         ],
 
-        contact: { type: mongoose.Schema.Types.ObjectId, ref: "Contact" }
+        role: {
+            type: String,
+            enum: ["User", "Admin"],
+            required: true
+        },
+
+        // contact: { type: mongoose.Schema.Types.ObjectId, ref: "Contact" }
     }
 );
 

@@ -7,6 +7,8 @@ const env = require("./config/config");
 const indexRoute = require("./routes/indexRoute");
 const contactRoute = require("./routes/contactRoute");
 const usersRoute = require("./routes/usersRoute");
+const adminRoute = require("./routes/adminRoute");
+const { setCors } = require("./middleware/security");
 
 mongoose.connect(env.db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 mongoose.connection.on("error", (err) => console.log(err));
@@ -15,11 +17,12 @@ mongoose.connection.on("open", () => console.log("database connected"));
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
+app.use(setCors);
 
 app.use("/", indexRoute);
 app.use("/contact", contactRoute);
 app.use("/users", usersRoute);
-
+app.use("/admin", adminRoute);
 
 app.use((req, res, next) => {
     next(createError(404));

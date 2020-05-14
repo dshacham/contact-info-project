@@ -9,7 +9,7 @@ exports.getContacts = async (req, res, next) => {
         const value = req.header("x-auth");
         const check = jwt.verify(value, "secretKey");
         if (check) {
-            const contactInfo = await Contact.find();
+            const contactInfo = await Contact.find().populate("userName", "-__v");
             res.json({ success: true, contactInfo: contactInfo });
         } else {
             throw createError(404);
@@ -24,7 +24,7 @@ exports.getContact = async (req, res, next) => {
     // const contactInfo = db.get("contactInfos").find(id);
     const { id } = req.params;
     try {
-        const contactInfo = await Contact.findById(id);
+        const contactInfo = await Contact.findById(id).populate("userName", "-__v");
         res.json({ success: true, contactInfo: contactInfo });
     }
     catch (err) {
